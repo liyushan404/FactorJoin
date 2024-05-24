@@ -4,7 +4,7 @@ import os
 import time
 
 from Join_scheme.data_prepare import convert_time_to_int
-from Evaluation.training import train_one_stats, train_one_imdb
+from Evaluation.training import train_one_stats, train_one_imdb, train_one_stats_single_table
 from Evaluation.testing import test_on_stats, test_on_imdb
 from Evaluation.updating import eval_update
 
@@ -12,12 +12,11 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', default='stats', help='Which dataset to be used')
-    
+
     # preprocess data
     parser.add_argument('--preprocess_data', help='Converting date into int', action='store_true')
     parser.add_argument('--data_folder',
                         default='/home/ubuntu/End-to-End-CardEst-Benchmark/datasets/stats_simplified/')
-    
 
     # generate models/ensembles
     parser.add_argument('--generate_models', help='Trains BNs on dataset', action='store_true')
@@ -69,7 +68,7 @@ if __name__ == '__main__':
     parser.add_argument('--update_evaluate', help='Train and incrementally update the model', action='store_true')
     parser.add_argument('--split_date', help='which date we want to split the data for update', type=str,
                         default="2014-01-01 00:00:00")
-    
+
     # log level
     parser.add_argument('--log_level', type=int, default=logging.DEBUG)
 
@@ -90,18 +89,26 @@ if __name__ == '__main__':
     if args.dataset == 'stats':
         if args.preprocess_data:
             convert_time_to_int(args.data_folder)
-        
+
         elif args.generate_models:
             start_time = time.time()
             train_one_stats(args.dataset, args.data_path, args.model_path, args.n_dim_dist, args.n_bins,
                             args.bucket_method, args.save_bucket_bins, args.seed)
+
+            # bayes_single_table
+            # train_stats(args.data_path, args.model_path)
+            # train_one_stats_single_table(args.dataset, args.data_path, args.model_path, args.n_dim_dist, args.n_bins,
+            #                 args.bucket_method, args.save_bucket_bins, args.seed)
             end_time = time.time()
             print(f"Training completed: total training time is {end_time - start_time}")
-            
+
         elif args.evaluate:
             save_file = os.path.join(args.save_folder, "stats_CEB_sub_queries_" +
                                      args.model_path.split("/")[-1].split(".pkl")[0] + ".txt")
             test_on_stats(args.model_path, args.query_file_location, save_file)
+
+            # save_file = os.path.join(args.save_folder, "stats_CEB_sub_queries_bayes" + ".txt")
+            # evaluate_cardinality_single_table(args.data_path, args.model_path, args.query_file_location,)
 
         elif args.update_evaluate:
             print(args.split_date)
@@ -123,5 +130,3 @@ if __name__ == '__main__':
                                      args.model_path.split("/")[-1].split(".pkl")[0] + ".txt")
             test_on_imdb(args.model_path, args.query_file_location, args.derived_query_file, args.sampling_percentage,
                          args.query_sample_location, save_file)
-            
-

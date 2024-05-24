@@ -74,6 +74,9 @@ class Bound_ensemble:
                 tables_all[table_str.split(" ")[-1]] = table_str.split(" ")[0]
 
         # processing conditions
+        if " WHERE " not in query:
+            return tables_all, None, None, None
+
         conditions = query.split(" WHERE ")[-1].split(" AND ")
         for cond in conditions:
             table, cond, join, join_key = process_condition(cond, tables_all)
@@ -245,6 +248,14 @@ class Bound_ensemble:
 
     def get_cardinality_bound_one(self, query_str, query_name=None):
         tables_all, table_queries, join_cond, join_keys = self.parse_query_simple(query_str)
+        # print(tables_all)
+        # print('---')
+        # print(table_queries)
+        # print('---')
+        # print(join_cond)
+        # print('---')
+        # print(join_keys)
+
         equivalent_group = get_join_hyper_graph(join_keys, self.equivalent_keys)
         if self.bns is not None:
             conditional_factors = self.get_all_id_conidtional_distribution_bn(table_queries, join_keys,

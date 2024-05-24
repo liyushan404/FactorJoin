@@ -196,6 +196,10 @@ def update_table_buckets(buckets, data, binned_data, all_bin_modes, table_bucket
         for key in key_attrs:
             if key in all_bin_modes and len(all_bin_modes[key]) != 0:
                 prev_bin_mode = table_buckets[table].oned_bin_modes[key]
+
+                #print(prev_bin_mode)
+                #print(all_bin_modes[key])
+
                 for i, nbm in enumerate(all_bin_modes[key]):
                     bm = prev_bin_mode[i]
                     if bm <= 10:

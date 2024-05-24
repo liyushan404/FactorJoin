@@ -119,15 +119,25 @@ def timestamp_transorform(time_string, start_date="2010-07-19 00:00:00"):
 
 def parse_query_single_table(query, BN):
     useful = query.split(' WHERE ')[-1].strip()
+    # print("useful is ",useful)
     result = dict()
     if 'AND' not in useful:
-        return result
-    for sub_query in useful.split(' AND '):
-        attr, ops, value = str_pattern_matching(sub_query.strip())
-        if "Date" in attr:
-            assert "::timestamp" in value
-            value = timestamp_transorform(value.strip().split("::timestamp")[0])
-        construct_table_query(BN, result, attr, ops, value)
+        if 'SELECT' in useful:
+            return result
+        else:
+            attr, ops, value = str_pattern_matching(useful.strip())
+            if "Date" in attr:
+                assert "::timestamp" in value
+                value = timestamp_transorform(value.strip().split("::timestamp")[0])
+            construct_table_query(BN, result, attr, ops, value)
+            return result
+    else:
+        for sub_query in useful.split(' AND '):
+            attr, ops, value = str_pattern_matching(sub_query.strip())
+            if "Date" in attr:
+                assert "::timestamp" in value
+                value = timestamp_transorform(value.strip().split("::timestamp")[0])
+            construct_table_query(BN, result, attr, ops, value)
     return result
 
 

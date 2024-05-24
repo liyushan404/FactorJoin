@@ -1,5 +1,6 @@
 from Schemas.graph_representation import SchemaGraph, Table
 
+
 def gen_stats_old_schema(hdf_path):
     """
     Generate the stats schema with a small subset of data.
@@ -68,7 +69,6 @@ def gen_stats_old_schema(hdf_path):
                            irrelevant_attributes=[],
                            no_compression=["LinkTypeId"],
                            table_size=1032))
-
 
     # relationships
     schema.add_relationship('comments', 'PostId', 'posts', 'Id')
@@ -173,7 +173,6 @@ def gen_stats_light_schema(hdf_path):
                            no_compression=[],
                            table_size=1032))
 
-
     # relationships
     schema.add_relationship('comments', 'PostId', 'posts', 'Id')
     schema.add_relationship('comments', 'UserId', 'users', 'Id')
@@ -193,6 +192,3 @@ def gen_stats_light_schema(hdf_path):
     schema.add_relationship('posts', 'OwnerUserId', 'users', 'Id')
 
     return schema
-
-
-

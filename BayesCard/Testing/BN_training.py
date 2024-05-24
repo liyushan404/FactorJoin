@@ -3,10 +3,11 @@ import pickle
 from Join_scheme.data_prepare import process_stats_data
 from BayesCard.Models.Bayescard_BN import Bayescard_BN
 
+
 def train_DMV(csv_path, model_path, algorithm, max_parents, sample_size):
     data = pd.read_csv(csv_path)
     new_cols = []
-    #removing unuseful columns
+    # removing unuseful columns
     for col in data.columns:
         if col in ['VIN', 'Zip', 'City', 'Make', 'Unladen Weight', 'Maximum Gross Weight', 'Passengers',
                    'Reg Valid Date', 'Reg Expiration Date', 'Color']:
@@ -21,6 +22,7 @@ def train_DMV(csv_path, model_path, algorithm, max_parents, sample_size):
     print(f"model saved at {model_path}")
     return None
 
+
 def train_Census(csv_path, model_path, algorithm, max_parents, sample_size):
     df = pd.read_csv(csv_path, header=0, sep=",")
     df = df.drop("caseid", axis=1)
@@ -33,13 +35,19 @@ def train_Census(csv_path, model_path, algorithm, max_parents, sample_size):
     return None
 
 
-def train_stats(data_path, model_folder, n_bins=500, save_bucket_bins=False):
-    data, null_values, key_attrs, all_bin_modes = process_stats_data(data_path, model_folder, n_bins, save_bucket_bins)
+def train_stats(data_path, model_folder, n_bins=500, bucket_method="greedy", save_bucket_bins=False):
+    # data, null_values, key_attrs, all_bin_modes = process_stats_data(data_path, model_folder, n_bins,
+    # save_bucket_bins)
+    data, null_values, key_attrs, table_buckets, equivalent_keys, schema, bin_size = process_stats_data(data_path,
+                                                                                                        model_folder,
+                                                                                                        n_bins,
+                                                                                                        bucket_method,
+                                                                                                        save_bucket_bins)
     for table in data:
         print(f"training BayesCard on table {table}")
-        bn = Bayescard_BN(table, key_attrs[table], null_values=null_values[table])
+        # bn = Bayescard_BN(table, key_attrs[table], null_values=null_values[table])
+        bn = Bayescard_BN(table, key_attrs[table], bin_size[table], null_values=null_values[table])
         bn.build_from_data(data[table])
         model_path = model_folder + f"/{table}.pkl"
         pickle.dump(bn, open(model_path, 'wb'), pickle.HIGHEST_PROTOCOL)
         print(f"model saved at {model_path}")
-

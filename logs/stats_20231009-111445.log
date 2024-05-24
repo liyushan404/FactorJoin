@@ -1,0 +1,48 @@
+2023-10-09 11:14:51,206 [INFO ]  Discretizing table takes 0.00871419906616211 secs
+2023-10-09 11:14:51,206 [INFO ]  Learning BN optimal structure from data with 54920 rows and 2 cols
+2023-10-09 11:14:51,364 [INFO ]  Structure learning took 0.15828418731689453 secs.
+2023-10-09 11:14:51,366 [INFO ]  Model spec[('badges.UserId', 'badges.Date')]
+2023-10-09 11:14:51,366 [INFO ]  calling pgm.BayesianModel.fit...
+2023-10-09 11:14:51,384 [INFO ]  done, took 0.017725706100463867 secs.
+2023-10-09 11:14:52,820 [INFO ]  Discretizing table takes 1.4307842254638672 secs
+2023-10-09 11:14:52,820 [INFO ]  Learning BN optimal structure from data with 245295 rows and 5 cols
+2023-10-09 11:14:53,702 [INFO ]  Structure learning took 0.8817851543426514 secs.
+2023-10-09 11:14:53,703 [INFO ]  Model spec[('votes.UserId', 'votes.VoteTypeId'), ('votes.PostId', 'votes.CreationDate'), ('votes.CreationDate', 'votes.UserId'), ('votes.VoteTypeId', 'votes.BountyAmount')]
+2023-10-09 11:14:53,703 [INFO ]  calling pgm.BayesianModel.fit...
+2023-10-09 11:14:53,776 [INFO ]  done, took 0.07295894622802734 secs.
+2023-10-09 11:14:53,887 [INFO ]  Discretizing table takes 0.08983755111694336 secs
+2023-10-09 11:14:53,887 [INFO ]  Learning BN optimal structure from data with 214690 rows and 4 cols
+2023-10-09 11:14:55,035 [INFO ]  Structure learning took 1.148329496383667 secs.
+2023-10-09 11:14:55,038 [INFO ]  Model spec[('postHistory.CreationDate', 'postHistory.PostId'), ('postHistory.UserId', 'postHistory.CreationDate'), ('postHistory.PostHistoryTypeId', 'postHistory.UserId')]
+2023-10-09 11:14:55,038 [INFO ]  calling pgm.BayesianModel.fit...
+2023-10-09 11:14:55,097 [INFO ]  done, took 0.059548377990722656 secs.
+2023-10-09 11:14:55,399 [INFO ]  Discretizing table takes 0.28909873962402344 secs
+2023-10-09 11:14:55,399 [INFO ]  Learning BN optimal structure from data with 65512 rows and 9 cols
+2023-10-09 11:14:56,446 [INFO ]  Structure learning took 1.046766996383667 secs.
+2023-10-09 11:14:56,449 [INFO ]  Model spec[('posts.AnswerCount', 'posts.PostTypeId'), ('posts.OwnerUserId', 'posts.CreationDate'), ('posts.Id', 'posts.Score'), ('posts.FavoriteCount', 'posts.ViewCount'), ('posts.ViewCount', 'posts.OwnerUserId'), ('posts.ViewCount', 'posts.AnswerCount'), ('posts.Id', 'posts.CommentCount'), ('posts.Id', 'posts.FavoriteCount')]
+2023-10-09 11:14:56,449 [INFO ]  calling pgm.BayesianModel.fit...
+2023-10-09 11:14:56,552 [INFO ]  done, took 0.1021108627319336 secs.
+2023-10-09 11:14:57,911 [INFO ]  Discretizing table takes 1.3476173877716064 secs
+2023-10-09 11:14:57,911 [INFO ]  Learning BN optimal structure from data with 25878 rows and 6 cols
+2023-10-09 11:14:58,205 [INFO ]  Structure learning took 0.2942659854888916 secs.
+2023-10-09 11:14:58,209 [INFO ]  Model spec[('users.Id', 'users.Reputation'), ('users.Reputation', 'users.CreationDate'), ('users.Reputation', 'users.Views'), ('users.Reputation', 'users.UpVotes'), ('users.UpVotes', 'users.DownVotes')]
+2023-10-09 11:14:58,209 [INFO ]  calling pgm.BayesianModel.fit...
+2023-10-09 11:14:58,243 [INFO ]  done, took 0.03365969657897949 secs.
+2023-10-09 11:14:58,340 [INFO ]  Discretizing table takes 0.08141732215881348 secs
+2023-10-09 11:14:58,340 [INFO ]  Learning BN optimal structure from data with 126884 rows and 4 cols
+2023-10-09 11:14:59,006 [INFO ]  Structure learning took 0.6655514240264893 secs.
+2023-10-09 11:14:59,008 [INFO ]  Model spec[('comments.UserId', 'comments.Score'), ('comments.PostId', 'comments.CreationDate'), ('comments.CreationDate', 'comments.UserId')]
+2023-10-09 11:14:59,008 [INFO ]  calling pgm.BayesianModel.fit...
+2023-10-09 11:14:59,081 [INFO ]  done, took 0.07241392135620117 secs.
+2023-10-09 11:14:59,098 [INFO ]  Discretizing table takes 0.012531757354736328 secs
+2023-10-09 11:14:59,098 [INFO ]  Learning BN optimal structure from data with 7191 rows and 4 cols
+2023-10-09 11:14:59,206 [INFO ]  Structure learning took 0.1081840991973877 secs.
+2023-10-09 11:14:59,207 [INFO ]  Model spec[('postLinks.CreationDate', 'postLinks.PostId'), ('postLinks.CreationDate', 'postLinks.RelatedPostId'), ('postLinks.CreationDate', 'postLinks.LinkTypeId')]
+2023-10-09 11:14:59,207 [INFO ]  calling pgm.BayesianModel.fit...
+2023-10-09 11:14:59,231 [INFO ]  done, took 0.023234844207763672 secs.
+2023-10-09 11:14:59,239 [INFO ]  Discretizing table takes 0.004670619964599609 secs
+2023-10-09 11:14:59,239 [INFO ]  Learning BN optimal structure from data with 1032 rows and 2 cols
+2023-10-09 11:14:59,243 [INFO ]  Structure learning took 0.003643512725830078 secs.
+2023-10-09 11:14:59,243 [INFO ]  Model spec[('tags.Count', 'tags.ExcerptPostId')]
+2023-10-09 11:14:59,243 [INFO ]  calling pgm.BayesianModel.fit...
+2023-10-09 11:14:59,251 [INFO ]  done, took 0.007948160171508789 secs.

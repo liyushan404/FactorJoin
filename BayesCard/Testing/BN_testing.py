@@ -1,21 +1,42 @@
-from Evaluation.cardinality_estimation import parse_query_single_table
-from Evaluation.parse_query_imdb import prepare_join_queries
-from Models.BN_ensemble_model import BN_ensemble
+from BayesCard.Evaluation.cardinality_estimation import parse_query_single_table
+from BayesCard.Evaluation.parse_query_imdb import prepare_join_queries
+# from BayesCard.Evaluation.parse_query_imdb import prepare_join_queries
+from BayesCard.Models.BN_ensemble_model import BN_ensemble
+from Schemas.stats.schema import gen_stats_light_schema, gen_stats_old_schema
 from time import perf_counter
 import numpy as np
 import pickle
 import time
+import os
 
-def evaluate_cardinality_single_table(model_path, query_path, infer_algo, sample_size=1000):
+
+def evaluate_cardinality_single_table(data_path, model_path, query_path, sample_size=1000):
     # load BN
-    with open(model_path, 'rb') as f:
-        BN = pickle.load(f)
-    if BN.infer_machine is None:
-        BN.infer_algo = infer_algo
-        BN.init_inference_method()
+    schema = gen_stats_old_schema(data_path)
+    BN = BN_ensemble(schema)
+    i = 0
+    for file in os.listdir(model_path):
+
+        if file.endswith(".pkl"):
+            print(file)
+            with open(model_path + file, "rb") as f:
+                bn = pickle.load(f)
+                bn.infer_algo = "exact-jit"
+                bn.init_inference_method()
+            # BN.bns[int(file[0])] = bn
+            BN.bns[i] = bn
+            i = i + 1
+
+    # with open(model_path, 'rb') as f:
+    #     BN = pickle.load(f)
+    # if BN.infer_machine is None:
+    #     BN.infer_algo = infer_algo
+    #     BN.init_inference_method()
+
     # read all queries
     with open(query_path) as f:
         queries = f.readlines()
+    q = BN.parse_query_all(queries)
     latencies = []
     q_errors = []
     for query_no, query_str in enumerate(queries):
@@ -26,8 +47,9 @@ def evaluate_cardinality_single_table(model_path, query_path, infer_algo, sample
             query = parse_query_single_table(query_str.strip(), BN)
             card_start_t = perf_counter()
             cardinality_predict = BN.query(query, sample_size=sample_size)
+            # cardinality_predict = BN.cardinality(q)
         except:
-            #In the case, that the query itself is invalid or contains some values that are not recognizable by BN
+            # In the case, that the query itself is invalid or contains some values that are not recognizable by BN
             continue
         card_end_t = perf_counter()
         latency_ms = (card_end_t - card_start_t) * 1000
@@ -50,7 +72,7 @@ def evaluate_cardinality_single_table(model_path, query_path, infer_algo, sample
         print(f"q-error {i}% percentile is {np.percentile(q_errors, i)}")
     print(f"average latency is {np.mean(latencies)} ms")
 
-    return latencies, q_errors
+    # return latencies, q_errors
 
 
 def evaluate_cardinality_imdb(schema, model_path, query_path, infer_algo, learning_algo, max_parents):
@@ -90,6 +112,6 @@ def evaluate_cardinality_imdb(schema, model_path, query_path, infer_algo, learni
     print("=====================================================================================")
     for i in [50, 90, 95, 99, 100]:
         print(f"q-error {i}% percentile is {np.percentile(q_errors, i)}")
-    print(f"average latency is {np.mean(latency)*1000} ms")
+    print(f"average latency is {np.mean(latency) * 1000} ms")
 
     return latency, q_errors

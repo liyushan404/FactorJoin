@@ -1,0 +1,3 @@
+exec time: 1538115.3740000003ms
+plan time: 10338.932ms
+total time: 1548454.3060000003ms
